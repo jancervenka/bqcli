@@ -1,5 +1,9 @@
 ## bqcli
 
+![PyPI](https://badge.fury.io/py/bqcli.svg)
+![Test](https://github.com/jancervenka/bqcli/actions/workflows/test.yml/badge.svg)
+![Publish](https://github.com/jancervenka/bqcli/actions/workflows/publish.yml/badge.svg)
+
 _REPL for Biquery_
 
 ### Installation and Usage
@@ -11,7 +15,7 @@ pip install bqcli
 bqcli
 ```
 
-Or you can use the tool command `uvx` from `uv` and run `bqcli` without installing it first
+Or you can use the tool command `uvx` from `uv` and run `bqcli` without installing it first.
 
 ```bash
 uvx bqcli
