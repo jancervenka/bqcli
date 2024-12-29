@@ -4,8 +4,6 @@
 ![Test](https://github.com/jancervenka/bqcli/actions/workflows/test.yml/badge.svg)
 ![Publish](https://github.com/jancervenka/bqcli/actions/workflows/publish.yml/badge.svg)
 
-_REPL for Biquery_
-
 <img src=".assets/bqcli.png" align="center" />
 
 ### Installation and Usage
