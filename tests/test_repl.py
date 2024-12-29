@@ -1,10 +1,9 @@
 import pexpect
-from src.helpers import mock_data
-from src.bqcli import _format_result
+from src.bqcli import _format_result, mock_data
 
 
 def test_repl():
-    child = pexpect.spawn("venv/bin/python -m tests.repl")
+    child = pexpect.spawn(".venv/bin/python -m tests.repl")
 
     child.expect("Happy BigQuerying.+")  # Wait for the prompt
     query = "select x, y, hello from test_table;"

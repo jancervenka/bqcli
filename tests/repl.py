@@ -1,5 +1,4 @@
-from src.helpers import MockBigQueryClient
-from src.bqcli import repl
+from src.bqcli import repl, MockBigQueryClient
 
 
 if __name__ == "__main__":

@@ -1,5 +1,6 @@
 import sys
 import time
+import sqlite3
 import warnings
 import pandas as pd
 from google.cloud import bigquery
@@ -15,6 +16,41 @@ HEADER_COLOR = "\033[92m"
 ROW_COLOR = "\033[94m"
 WHITE = "\033[97m"
 EXIT_COMMANDS = (":exit", ":quit")
+
+
+def mock_data() -> pd.DataFrame:
+    return pd.DataFrame(
+        {
+            "x": ["A", "B", "C"],
+            "y": [1.0, 2.3, 4.5],
+            "hello": ["test"] * 3
+        }
+    )
+
+
+class MockBigQueryJob(bigquery.QueryJob):
+
+    def __init__(self, result: pd.DataFrame):
+        self._result = result
+
+    def to_dataframe(self) -> pd.DataFrame:
+        return self._result
+
+
+class MockBigQueryClient(bigquery.Client):
+
+    def __init__(self):
+        self._conn = sqlite3.connect(':memory:')
+        mock_data().to_sql("test_table", self._conn)
+
+    def query(self, query: str) -> MockBigQueryJob:
+        try:
+            result = pd.read_sql(query, self._conn)
+            return MockBigQueryJob(result)
+        except Exception as e:
+            message = "\n" + str(e)
+            raise BadRequest(message=message, errors=[{"message": message}])
+
 
 
 def _add_query_to_history(session: PromptSession, query: str) -> None:
@@ -89,7 +125,3 @@ def repl(bq_client: bigquery.Client | None) -> None:
         result = _evaluate_query(query, bq_client)
         if result is not None:
             print(_format_result(result))
-
-
-if __name__ == "__main__":
-    repl()
