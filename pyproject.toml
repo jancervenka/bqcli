@@ -1,6 +1,6 @@
 [project]
 name = "bqcli"
-version = "0.1.0"
+version = "0.1.1"
 description = "REPL for BigQuery"
 authors = [
     {name = "Jan Červenka", email = "jan.cervenka@yahoo.com"},
@@ -22,7 +22,7 @@ dev = [
 ]
 
 [project.scripts]
-example-pkg = "bqcli:repl"
+bqcli = "bqcli:repl"
 
 [build-system]
 requires = ["hatchling"]
