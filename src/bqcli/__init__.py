@@ -114,7 +114,7 @@ def _read_query(session: PromptSession) -> str:
     return query
 
 
-def repl(bq_client: bigquery.Client | None) -> None:
+def repl(bq_client: bigquery.Client | None = None) -> None:
     warnings.simplefilter("ignore", UserWarning)
     bq_client = bq_client if bq_client is not None else bigquery.Client()
     session = PromptSession()
