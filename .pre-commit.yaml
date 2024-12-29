@@ -1,13 +1,4 @@
 repos:
-- repo: https://github.com/Lucas-C/pre-commit-hooks
-  rev: v1.5.5
-  hooks:
-    - id: forbid-crlf
-    - id: remove-crlf
-    - id: forbid-tabs
-      exclude: '\.csv$'
-    - id: remove-tabs
-      exclude: '\.csv$'
 -   repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v4.6.0
     hooks:
