@@ -6,6 +6,8 @@
 
 _REPL for Biquery_
 
+<img src=".assets/bqcli.png" align="center" />
+
 ### Installation and Usage
 
 The program can be installed with pip, it will set up an entry point called `bqcli`.
