@@ -1,26 +1,24 @@
-import os
 import sys
 import time
-import readline
 import warnings
 import pandas as pd
 from google.cloud import bigquery
-from google.api_core.exceptions import BadRequest
+from google.api_core.exceptions import BadRequest, NotFound
+
+from prompt_toolkit import PromptSession
+from prompt_toolkit.lexers import PygmentsLexer
+from pygments.lexers.sql import SqlLexer
 
 BOLD = "\033[1m"
 ENDC = "\033[0m"
 HEADER_COLOR = "\033[92m"
 ROW_COLOR = "\033[94m"
 WHITE = "\033[97m"
+EXIT_COMMANDS = (":exit", ":quit")
 
 
-def _init_history() -> None:
-    history_file = os.path.join(os.path.expanduser("~"), ".bqcli_history")
-    try:
-        readline.read_history_file(history_file)
-    except FileNotFoundError:
-        with open(history_file, 'wb') as f:
-            f.close()
+def _add_query_to_history(session: PromptSession, query: str) -> None:
+    session.history.append_string(query)
 
 
 def _evaluate_query(query: str, bq_client: bigquery.Client) -> pd.DataFrame | None:
@@ -30,7 +28,7 @@ def _evaluate_query(query: str, bq_client: bigquery.Client) -> pd.DataFrame | No
         result = bq_client.query(query).to_dataframe()
         t_1 = time.time()
         message = f"{WHITE}took {(t_1 - t_0):.2f} seconds to finish.{ENDC}\n"
-    except BadRequest as exc:
+    except (BadRequest, NotFound) as exc:
         result = None
         error_message = exc.errors[0]["message"]
         message = f"{WHITE}error: {error_message}.{ENDC}\n"
@@ -58,28 +56,36 @@ def _format_result(result: pd.DataFrame) -> str:
     )
 
 
-def _read_query() -> str:
+def _exit() -> None:
+    print("Have a nice day!")
+    sys.exit()
+
+
+def _read_query(session: PromptSession) -> str:
     query = ""
     while True:
         try:
-            segment = input(">" if not query else "")
+            segment = session.prompt(">" if not query else "", lexer=PygmentsLexer(SqlLexer))
+            if segment in EXIT_COMMANDS:
+                _exit()
             segment = segment if segment.endswith(";") else segment + " "            
             query += segment
             if query and query[-1] == ";":
                 break
 
         except KeyboardInterrupt:
-            sys.exit()
+            _exit()
     return query
 
 
-def repl() -> None:
-    # _init_history()
+def repl(bq_client: bigquery.Client | None) -> None:
     warnings.simplefilter("ignore", UserWarning)
-    bq_client = bigquery.Client()
+    bq_client = bq_client if bq_client is not None else bigquery.Client()
+    session = PromptSession()
     print("Happy BigQuerying!")
     while True:
-        query = _read_query()
+        query = _read_query(session)
+        _add_query_to_history(session, query)
         result = _evaluate_query(query, bq_client)
         if result is not None:
             print(_format_result(result))
