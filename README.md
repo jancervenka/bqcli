@@ -8,7 +8,7 @@
 
 ### Installation and Usage
 
-The program can be installed with pip, it will set up an entry point called `bqcli`.
+The program can be installed with `pip`, it will set up an entry point called `bqcli`.
 
 ```bash
 pip install bqcli

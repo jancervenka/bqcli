@@ -1,6 +1,6 @@
 [project]
 name = "bqcli"
-version = "0.1.2"
+version = "0.1.3"
 description = "REPL for BigQuery"
 authors = [
     {name = "Jan Červenka", email = "jan.cervenka@yahoo.com"},
