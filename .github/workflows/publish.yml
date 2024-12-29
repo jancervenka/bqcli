@@ -29,4 +29,4 @@ jobs:
     - name: Publish Package
       run: |
         uv build
-        uv publish
+        uv publish -t ${{ secrets.PYPI_TOKEN }}
