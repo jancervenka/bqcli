@@ -4,7 +4,7 @@
 ![Test](https://github.com/jancervenka/bqcli/actions/workflows/test.yml/badge.svg)
 ![Publish](https://github.com/jancervenka/bqcli/actions/workflows/publish.yml/badge.svg)
 
-<img src=".assets/bqcli.png" align="center" />
+<img src=".assets/bqcli-min.gif" align="center" />
 
 ### Installation and Usage
 
